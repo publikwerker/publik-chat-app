@@ -1,0 +1,22 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "'real-time chat app using socket io'",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch --runInBand"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/publikwerker/andrew_mead_node.git"
+  },
+  "author": "Publikwerker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/publikwerker/andrew_mead_node/issues"
+  },
+  "homepage": "https://github.com/publikwerker/andrew_mead_node#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
