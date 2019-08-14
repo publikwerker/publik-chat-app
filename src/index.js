@@ -4,8 +4,24 @@ const chalk = require('chalk');
 const socketio = require('socket.io');
 const io = socketio(server);
 
-io.on('connection', () => {
-  console.log(chalk.blue.bold(`New WebSocket connection`))
+let count = 0;
+
+// server (emit) => client (receive) - countUpdated
+// client (emit) => server (receive) - increment
+
+io.on('connection', (socket) => {
+  console.log(chalk.blue.bold(`New WebSocket connection`));
+
+  socket.emit('countUpdated', count)
+
+  socket.on('increment', () => {
+    count++;
+    // updates current socket only
+    // socket.emit('countUpdated', count);
+
+    //updates all sockets
+    io.emit('countUpdated', count);
+  })
 });
 
 server.listen(PORT, ()=> {
