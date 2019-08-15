@@ -5,21 +5,38 @@ const $chatForm = document.querySelector('#message-form');
 const $chatFormInput = $chatForm.querySelector('#message');
 const $chatFormButton = $chatForm.querySelector('#send') ;
 const $locateButton = document.querySelector('#send-location');
+const $messages = document.querySelector('#messages');
+
+// TEMPLATES
+const messageTemplate = document.querySelector('#message-template').innerHTML;
+const locationLinkTemplate = document.querySelector('#location-link-template').innerHTML;
 
 socket.on('joined', (message) => {
   console.log(message);
 });
- 
+
+socket.on('locationMessage', (url) => {
+  console.log(url);
+  const html = Mustache.render(locationLinkTemplate, {
+    url
+  });
+  $messages.insertAdjacentHTML('beforeend', html);
+});
+
 socket.on('message', (message) => {
   console.log(message);
-})
+});
 
 socket.on('alert', (alert) => {
   console.log(alert)
-})
+});
 
 socket.on('newMessage', (message) => {
   console.log(message);
+  const html = Mustache.render(messageTemplate, {
+    message
+  });
+  $messages.insertAdjacentHTML('beforeend', html);
 });
 
 $chatForm.addEventListener('submit', (e) => {
@@ -38,8 +55,8 @@ $chatForm.addEventListener('submit', (e) => {
       return console.log(error)
     }
     console.log(`Message delivered.`)
-  })
-})
+  });
+});
 
 $locateButton
   .addEventListener('click', () => {

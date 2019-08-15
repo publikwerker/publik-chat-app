@@ -16,7 +16,7 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('alert', 'A new user has joined');
 
   socket.on('newMessage', (message, callback) => {
-    const filter = new Filter()
+    const filter = new Filter();
 
     if (filter.isProfane(message)) {
       return callback('Profanity is not allowed')
@@ -27,15 +27,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendLocation', (position, callback) => {
-    io.emit('message', `https://google.com/maps?q=${position.lat},${position.long}`);
+    io.emit('locationMessage', `https://google.com/maps?q=${position.lat},${position.long}`);
     callback();
-  })
+  });
 
   socket.on('disconnect', () => {
     io.emit('joined', `A user has left`);
-  })
+  });
 });
 
 server.listen(PORT, ()=> {
-  console.log(chalk.green.bold(`Server is running on port ${PORT}`))
+  console.log(chalk.green.bold(`Server is running on port ${PORT}`));
 });
