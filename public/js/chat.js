@@ -5,6 +5,10 @@ socket.on('joined', (message) => {
   console.log(message);
 });
 
+socket.on('alert', (alert) => {
+  console.log(alert)
+})
+
 socket.on('newMessage', (message) => {
   console.log(message);
 });

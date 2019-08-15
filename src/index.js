@@ -10,14 +10,20 @@ const io = socketio(server);
 io.on('connection', (socket) => {
   console.log(chalk.blue.bold(`New WebSocket connection`));
 
-  // updates current socket only
+  // updates current client only
   socket.emit('joined', 'Welcome to the chat!');
+  socket.broadcast.emit('alert', 'A new user has joined');
+
   socket.on('newMessage', (message) => {
   
-    //updates all sockets
+    //updates all clients
     io.emit('newMessage', message);
     console.log(message);
   });
+
+  socket.on('disconnect', () => {
+    io.emit('joined', `A user has left`);
+  })
 });
 
 server.listen(PORT, ()=> {
