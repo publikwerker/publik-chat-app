@@ -20,7 +20,7 @@ socket.on('newMessage', (message) => {
 chatForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const message = e.target.elements.message.value;
-  socket.emit('newMessage', message)
+  socket.emit('newMessage', message, (data) => {console.log(`The message was delivered! ${data}`)})
 });
 
 document.querySelector('#send-location').addEventListener('click', () => {

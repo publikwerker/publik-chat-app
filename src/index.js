@@ -14,11 +14,11 @@ io.on('connection', (socket) => {
   socket.emit('joined', 'Welcome to the chat!');
   socket.broadcast.emit('alert', 'A new user has joined');
 
-  socket.on('newMessage', (message) => {
+  socket.on('newMessage', (message, callback) => {
   
     //updates all clients
     io.emit('newMessage', message);
-    console.log(message);
+    callback('Done!');
   });
 
   socket.on('sendLocation', (position) => {
