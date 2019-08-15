@@ -37,6 +37,11 @@ document.querySelector('#send-location').addEventListener('click', () => {
      socket.emit('sendLocation', {
        lat: position.coords.latitude, 
        long: position.coords.longitude
+      }, (error) => {
+        if(error){
+          return console.log(error)
+        }
+        console.log(`Location shared.`)
       });
    });
 });
