@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/publikwerker/andrew_mead_node#readme",
   "dependencies": {
+    "bad-words": "^3.0.3",
     "chalk": "^2.4.2",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",

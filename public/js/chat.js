@@ -20,8 +20,13 @@ socket.on('newMessage', (message) => {
 chatForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const message = e.target.elements.message.value;
-  socket.emit('newMessage', message, (data) => {console.log(`The message was delivered! ${data}`)})
-});
+  socket.emit('newMessage', message, (error) => {
+    if (error) {
+      return console.log(error)
+    }
+    console.log(`Message delivered.`)
+  })
+})
 
 document.querySelector('#send-location').addEventListener('click', () => {
    if (!navigator.geolocation) {
@@ -35,3 +40,4 @@ document.querySelector('#send-location').addEventListener('click', () => {
       });
    });
 });
+
