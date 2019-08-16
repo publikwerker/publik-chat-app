@@ -13,8 +13,7 @@ io.on('connection', (socket) => {
   console.log(chalk.blue.bold(`New WebSocket connection`));
 
   // updates current client only
-  socket.emit('joined', generateMessage('Welcome to the chat!'));
-  socket.broadcast.emit('alert', generateMessage('A new user has joined'));
+
 
   socket.on('newMessage', (message, callback) => {
     const filter = new Filter();
@@ -23,9 +22,16 @@ io.on('connection', (socket) => {
       return callback('Profanity is not allowed')
     }
     //updates all clients
-    io.emit('newMessage', generateMessage(message));
+    io.to('bobs').emit('newMessage', generateMessage(message));
     callback();
   });
+
+  socket.on('join', ({ username, room }) => {
+    socket.join(room);
+
+    socket.emit('joined', generateMessage('Welcome to the chat!'));
+    socket.broadcast.to(room).emit('alert', generateMessage(`${username} has joined.`));
+  })
 
   socket.on('sendLocation', (position, callback) => {
     io.emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${position.lat},${position.long}`));
