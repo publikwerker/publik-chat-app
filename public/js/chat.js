@@ -12,41 +12,41 @@ const messageTemplate = document.querySelector('#message-template').innerHTML;
 const locationLinkTemplate = document.querySelector('#location-link-template').innerHTML;
 
 socket.on('joined', (message) => {
-  console.log(message);
   const html = Mustache.render(messageTemplate, {
-    message: message.text
+    message: message.text,
+    createdAt: moment(message.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
 
-socket.on('locationMessage', (url) => {
-  console.log(url);
+socket.on('locationMessage', (message) => {
   const html = Mustache.render(locationLinkTemplate, {
-    url: url.text
+    url: message.url,
+    createdAt: moment(message.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('message', (message) => {
-  console.log(message);
   const html = Mustache.render(locationLinkTemplate, {
-    message: message.text
+    message: message.text,
+    createdAt: moment(message.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('alert', (alert) => {
-  console.log(alert);
   const html = Mustache.render(messageTemplate, {
-    message: alert.text
+    message: alert.text,
+    createdAt: moment(alert.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('newMessage', (message) => {
-  console.log(message);
   const html = Mustache.render(messageTemplate, {
-    message: message.text
+    message: message.text,
+    createdAt: moment(message.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
