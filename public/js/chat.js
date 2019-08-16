@@ -13,28 +13,40 @@ const locationLinkTemplate = document.querySelector('#location-link-template').i
 
 socket.on('joined', (message) => {
   console.log(message);
+  const html = Mustache.render(messageTemplate, {
+    message: message.text
+  });
+  $messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('locationMessage', (url) => {
   console.log(url);
   const html = Mustache.render(locationLinkTemplate, {
-    url
+    url: url.text
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('message', (message) => {
   console.log(message);
+  const html = Mustache.render(locationLinkTemplate, {
+    message: message.text
+  });
+  $messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('alert', (alert) => {
-  console.log(alert)
+  console.log(alert);
+  const html = Mustache.render(messageTemplate, {
+    message: alert.text
+  });
+  $messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('newMessage', (message) => {
   console.log(message);
   const html = Mustache.render(messageTemplate, {
-    message
+    message: message.text
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
