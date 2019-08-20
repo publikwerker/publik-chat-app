@@ -36,9 +36,6 @@ const autoscroll = () => {
   if (contentHeight - newMessageHeight <= scrollOffset) {
     $messages.scrollTop = contentHeight;
   }
-
-  console.log(newMessageMargin)
-
 }
 
 socket.on('joined', (data) => {
@@ -81,7 +78,6 @@ socket.on('newMessage', (data) => {
 });
 
 socket.on('roomData', ({ room, users }) => {
-  console.log(users)
   const html = Mustache.render(sidebarTemplate, {
     room,
     users: users.roomies
