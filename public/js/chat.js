@@ -14,25 +14,27 @@ const locationLinkTemplate = document.querySelector('#location-link-template').i
 // OPTIONS
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true});
 
-socket.on('joined', (message) => {
+socket.on('joined', (data) => {
   const html = Mustache.render(messageTemplate, {
-    message: message.message,
-    createdAt: moment(message.createdAt).format('h:mm A')
+    username: data.username,
+    message: data.message,
+    createdAt: moment(data.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
 
-socket.on('locationMessage', (message) => {
+socket.on('locationMessage', (data) => {
   const html = Mustache.render(locationLinkTemplate, {
-    url: message.url,
-    username: message.username,
-    createdAt: moment(message.createdAt).format('h:mm A')
+    url: data.url,
+    username: data.username,
+    createdAt: moment(data.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
 
 socket.on('alert', (alert) => {
   const html = Mustache.render(messageTemplate, {
+    username: alert.username,
     message: alert.message,
     createdAt: moment(alert.createdAt).format('h:mm A')
   });
