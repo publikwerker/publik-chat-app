@@ -5,6 +5,12 @@ const socketio = require('socket.io');
 const io = socketio(server);
 const Filter = require('bad-words');
 const { generateMessage, generateLocationMessage } = require('./utils/messages');
+const { 
+  addUser,
+  removeUser,
+  getUser,
+  getRoomies
+ } = require('./utils/users');
 
 // server (emit) => client (receive) - joined, newMessage
 // client (emit) => server (receive) - newMessage
@@ -12,34 +18,44 @@ const { generateMessage, generateLocationMessage } = require('./utils/messages')
 io.on('connection', (socket) => {
   console.log(chalk.blue.bold(`New WebSocket connection`));
 
-  // updates current client only
-
-
   socket.on('newMessage', (message, callback) => {
     const filter = new Filter();
+    const user = getUser(socket.id);
 
     if (filter.isProfane(message)) {
       return callback('Profanity is not allowed')
     }
     //updates all clients
-    io.to('bobs').emit('newMessage', generateMessage(message));
+    io.to(user.room).emit('newMessage', generateMessage(message));
     callback();
   });
 
-  socket.on('join', ({ username, room }) => {
-    socket.join(room);
+  socket.on('join', ({ username, room }, callback) => {
+    const { error, user} = addUser({ id: socket.id, username, room})
+
+    if (error) {
+      return callback(error);
+    }
+
+    socket.join(user.room);
 
     socket.emit('joined', generateMessage('Welcome to the chat!'));
-    socket.broadcast.to(room).emit('alert', generateMessage(`${username} has joined.`));
+    socket.broadcast.to(user.room).emit('alert', generateMessage(`${user.username} has joined.`));
+    callback();
   })
 
   socket.on('sendLocation', (position, callback) => {
-    io.emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${position.lat},${position.long}`));
+    const user = getUser(socket.id);
+    io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${position.lat},${position.long}`));
     callback();
   });
 
   socket.on('disconnect', () => {
-    io.emit('joined', generateMessage(`A user has left`));
+    const user = removeUser(socket.id);
+
+    if (user) {
+      io.to(user.room).emit('joined', generateMessage(`${user.username} has left`));
+    }
   });
 });
 

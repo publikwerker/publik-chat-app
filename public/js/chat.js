@@ -25,6 +25,7 @@ socket.on('joined', (message) => {
 socket.on('locationMessage', (message) => {
   const html = Mustache.render(locationLinkTemplate, {
     url: message.url,
+    username: message.username,
     createdAt: moment(message.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
@@ -96,4 +97,9 @@ $locateButton
    });
 });
 
-socket.emit('join', { username, room })
+socket.emit('join', { username, room }, (error) => {
+  if (error) {
+    alert(error);
+    location.href = '/';
+  }
+})

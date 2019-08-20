@@ -48,6 +48,7 @@ const getUser = (id) => {
 
 //getUsersInRoom
 const getRoomies = (room) => {
+  room = room.trim().toLowerCase();
   const roomies = users.filter((user) => user.room === room );
   if (!roomies) {
     return {
@@ -59,26 +60,9 @@ const getRoomies = (room) => {
   };
 };
 
-//EXAMPLE CODE
-addUser({
-  id: 22,
-  username: 'lou  ',
-  room: 'bobs'
-})
-
-addUser({
-  id:42,
-  username: 'molly',
-  room: 'mollys'
-})
-
-addUser({
-  id:32,
-  username: 'alec',
-  room: 'bobs'
-})
-
-console.log(users);
-
-console.log(getUser(42));
-console.log(getRoomies('bobs'));
+module.exports = {
+  addUser,
+  removeUser,
+  getUser,
+  getRoomies
+}
