@@ -11,6 +11,7 @@ const {
   getUser,
   getRoomies
  } = require('./utils/users');
+ const Admin = 'werkBot';
 
 // server (emit) => client (receive) - joined, newMessage
 // client (emit) => server (receive) - newMessage
@@ -39,8 +40,8 @@ io.on('connection', (socket) => {
 
     socket.join(user.room);
 
-    socket.emit('joined', generateMessage(user.username, `Welcome to the chat, ${user.username}!`));
-    socket.broadcast.to(user.room).emit('alert', generateMessage(user.username, `${user.username} has joined.`));
+    socket.emit('joined', generateMessage(Admin, `Welcome to the chat, ${user.username}!`));
+    socket.broadcast.to(user.room).emit('alert', generateMessage(Admin, `${user.username} has joined.`));
     callback();
   })
 
@@ -54,7 +55,7 @@ io.on('connection', (socket) => {
     const user = removeUser(socket.id);
 
     if (user) {
-      io.to(user.room).emit('joined', generateMessage(`${user.username} has left`));
+      io.to(user.room).emit('joined', generateMessage(Admin, `${user.username} has left`));
     }
   });
 });
