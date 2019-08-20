@@ -16,7 +16,7 @@ const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true})
 
 socket.on('joined', (message) => {
   const html = Mustache.render(messageTemplate, {
-    message: message.text,
+    message: message.message,
     createdAt: moment(message.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
@@ -31,26 +31,19 @@ socket.on('locationMessage', (message) => {
   $messages.insertAdjacentHTML('beforeend', html);
 });
 
-socket.on('message', (message) => {
-  const html = Mustache.render(locationLinkTemplate, {
-    message: message.text,
-    createdAt: moment(message.createdAt).format('h:mm A')
-  });
-  $messages.insertAdjacentHTML('beforeend', html);
-});
-
 socket.on('alert', (alert) => {
   const html = Mustache.render(messageTemplate, {
-    message: alert.text,
+    message: alert.message,
     createdAt: moment(alert.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
 
-socket.on('newMessage', (message) => {
+socket.on('newMessage', (data) => {
   const html = Mustache.render(messageTemplate, {
-    message: message.text,
-    createdAt: moment(message.createdAt).format('h:mm A')
+    username: data.username,
+    message: data.message,
+    createdAt: moment(data.createdAt).format('h:mm A')
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });

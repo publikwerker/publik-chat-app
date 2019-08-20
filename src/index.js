@@ -22,11 +22,11 @@ io.on('connection', (socket) => {
     const filter = new Filter();
     const user = getUser(socket.id);
 
-    if (filter.isProfane(message)) {
+    if (filter.isProfane(message.text)) {
       return callback('Profanity is not allowed')
     }
     //updates all clients
-    io.to(user.room).emit('newMessage', generateMessage(message));
+    io.to(user.room).emit('newMessage', generateMessage(user.username, message));
     callback();
   });
 
@@ -39,8 +39,8 @@ io.on('connection', (socket) => {
 
     socket.join(user.room);
 
-    socket.emit('joined', generateMessage('Welcome to the chat!'));
-    socket.broadcast.to(user.room).emit('alert', generateMessage(`${user.username} has joined.`));
+    socket.emit('joined', generateMessage(user.username, `Welcome to the chat, ${user.username}!`));
+    socket.broadcast.to(user.room).emit('alert', generateMessage(user.username, `${user.username} has joined.`));
     callback();
   })
 
