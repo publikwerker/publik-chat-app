@@ -11,8 +11,7 @@
   </head>
   <body>
     <div class="chat">
-      <div class="chat__sidebar">
-
+      <div id="sidebar" class="chat__sidebar">
       </div>
       <div class="chat__main">
         <h1>Chat App</h1>
@@ -21,7 +20,10 @@
           <form id="message-form">
             <input 
               id="message"
-              type="text" placeholder="Hey, ..."/>
+              type="text" 
+              placeholder="Hey, ..."
+              required
+              autocomplete="off"/>
             <button id="send">Send</button>
           </form>
           <button id="send-location">Send location</button>
@@ -47,6 +49,16 @@
           </p>
         <p><a href="{{url}}" target="_blank">My location.</a></p>
       </div>
+    </script>
+
+    <script id="sidebar-template" type="text/html">
+      <h2 class="room-title">{{room}}</h2>
+      <h3 class="list-title">Roomies</h3>
+      <ul class="users">
+        {{#users}}
+          <li>{{username}}</li>
+        {{/users}}
+      </ul>
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>

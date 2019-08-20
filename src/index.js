@@ -43,6 +43,10 @@ io.on('connection', (socket) => {
     socket.emit('joined', generateMessage(Admin, `Welcome to the chat, ${user.username}!`));
     socket.broadcast.to(user.room).emit('alert', generateMessage(Admin, `${user.username} has joined.`));
     callback();
+    io.to(user.room).emit('roomData', {
+      room: user.room,
+      users: getRoomies(user.room)
+    })
   })
 
   socket.on('sendLocation', (position, callback) => {
@@ -56,6 +60,10 @@ io.on('connection', (socket) => {
 
     if (user) {
       io.to(user.room).emit('joined', generateMessage(Admin, `${user.username} has left`));
+      io.to(user.room).emit('roomData', {
+        room: user.room,
+        users: getRoomies(user.room)
+      })
     }
   });
 });

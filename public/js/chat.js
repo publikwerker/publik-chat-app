@@ -10,6 +10,7 @@ const $messages = document.querySelector('#messages');
 // TEMPLATES
 const messageTemplate = document.querySelector('#message-template').innerHTML;
 const locationLinkTemplate = document.querySelector('#location-link-template').innerHTML;
+const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML;
 
 // OPTIONS
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true});
@@ -49,6 +50,15 @@ socket.on('newMessage', (data) => {
   });
   $messages.insertAdjacentHTML('beforeend', html);
 });
+
+socket.on('roomData', ({ room, users }) => {
+  console.log(users)
+  const html = Mustache.render(sidebarTemplate, {
+    room,
+    users: users.roomies
+  });
+  document.querySelector('#sidebar').innerHTML = html;
+})
 
 $chatForm.addEventListener('submit', (e) => {
   e.preventDefault();

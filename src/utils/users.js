@@ -55,6 +55,7 @@ const getRoomies = (room) => {
       error: `${room} is empty.`
     }
   }
+  console.log(roomies)
   return {
     roomies
   };
